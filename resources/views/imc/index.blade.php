@@ -62,7 +62,7 @@
                     max: 100
                 },
                 series: [{
-                    name: 'Porcentaje Superado',
+                    name: 'Porcentajes Superados',
                     data: [
                         {{ $porcentajeSuperadoPecho }},
                         {{ $porcentajeSuperadoBiceps }},
