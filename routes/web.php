@@ -24,12 +24,15 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 use App\Http\Controllers\EstadisticasController;
+use App\Http\Controllers\imcController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/estadisticas/create', [EstadisticasController::class, 'create'])->name('estadisticas.create');
     Route::post('/estadisticas', [EstadisticasController::class, 'store'])->name('estadisticas.store');
     Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas.index');
-    Route::get('/imc/create', [EstadisticasController::class, 'create'])->name('imc.create');
-    Route::post('/imc', [EstadisticasController::class, 'store'])->name('imc.store');
-    Route::get('/imc', [EstadisticasController::class, 'index'])->name('imc.index');
+    Route::get('/imc', [imcController::class, 'index'])->name('imc.index');
+    Route::get('/imc/create', [imcController::class, 'create'])->name('imc.create');
+    Route::post('/imc', [imcController::class, 'calculateImc'])->name('imc.calculateImc');
+    Route::get('/resultado', [imcController::class, 'resultado'])->name('imc.resultado');
+    
 });

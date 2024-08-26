@@ -3,51 +3,54 @@
 namespace App\Http\Controllers;
 
 use App\Models\Imc;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\DB;
 
-class ImcController extends Controller
+class imcController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-
-    public function create()
-    {
-        return view('imc.create');
+    public function index(){
+        $userId = Auth::id();
+        return view('imc.index');
     }
 
-    public function store(Request $request)
+    public function calculateImc(Request $request)
     {
         $validatedData = $request->validate([
-            'pecho' => 'required|numeric', // Validación numérica
-            'biceps' => 'required|numeric', // Validación numérica
-            'pierna' => 'required|numeric', // Validación numérica
-            'hombro' => 'required|numeric', // Validación numérica
-            'dia' => 'required|date',
+            'cms' => 'required|numeric',
+            'kgs' => 'required|numeric',
         ]);
 
-         // Obtener el ID del usuario autenticado
-         $userId = Auth::id();
+         // Obtener los datos del formulario
+         $altura = $request->input('cms');
+         $peso = $request->input('kgs');
 
-         if (is_null($userId)) {
-             return redirect()->route('estadisticas.create')->withErrors('El usuario no está autenticado');
-         }
+        $userId = Auth::id();
+
+        if (is_null($userId)) {
+            return redirect()->route('imc.index')->withErrors('El usuario no está autenticado');
+        }
+
+        //Calculamos IMC
+        $calculoImc = $peso / (($altura / 100) ** 2);
+
 
         // Crear una nueva estadística con el ID del usuario autenticado
-        $estadistica = new Imc();
-        $estadistica->id_user = Auth::id(); // Asigna el ID del usuario autenticado
-        $estadistica->pecho = $request->input('pecho');
-        $estadistica->biceps = $request->input('biceps');
-        $estadistica->pierna = $request->input('pierna');
-        $estadistica->hombro = $request->input('hombro');
-        $estadistica->dia = $request->input('dia');
-        $estadistica->save();
+        $Imc = new Imc();
+        $Imc->user_id = $userId;
+        $Imc->cms = $request->input('cms');
+        $Imc->kgs = $request->input('kgs');
+        $Imc->resultado = $calculoImc;
+        //$Imc->resultado = $request->input('resultado');
+        $Imc->save();
 
-        return redirect()->route('estadisticas.create')->with('success', 'Estadística guardada exitosamente');
+        return view('imc.resultado',compact('calculoImc'));
     }
 
+ 
 }
