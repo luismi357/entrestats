@@ -6,7 +6,7 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center">  
-        <div class="col-md-4">
+        <div class="col-md-6">
             <!-- Selector para el tipo de gráfico -->
             <label for="chartType">Selecciona el tipo de gráfico:</label>
             <select id="chartType" class="form-control" style="width: 100%;">
@@ -23,7 +23,7 @@
             </select>
         </div>
         <!-- Selector para el día -->
-        <div class="col-md-4">
+        <div class="col-md-6">
             <label for="chartDay">Selecciona el día:</label>
             <select id="chartDay" class="form-control" style="width: 100%;">
                 @foreach($diasDisponibles as $dia)
@@ -33,6 +33,12 @@
                 </option>
                 @endforeach
             </select>
+        </div>
+        <div class="col-md-12">
+            <div id="resultadosPecho">Has superado al {{ $porcentajeSuperadoPecho }}% de los usuarios en pecho</div>
+            <div id="resultadosPecho">Has superado al {{ $porcentajeSuperadoBiceps }}% de los usuarios en biceps</div>
+            <div id="resultadosPecho">Has superado al {{ $porcentajeSuperadoPierna }}% de los usuarios en pierna</div>
+            <div id="resultadosPecho">Has superado al {{ $porcentajeSuperadoHombro }}% de los usuarios en hombro</div>
         </div>
     </div>
     
@@ -100,13 +106,20 @@
             var selectedType = this.value;
             renderChart(selectedType, selectedDay);
         });
-
+        //Actualizar el grafico cuando el usuario cambie el dia
         document.getElementById('chartDay').addEventListener('change', function () {
             var selectedDay = this.value;
             var selectedType = document.getElementById('chartType').value;
             renderChart(selectedType, selectedDay);
         });
-   
+
+        document.getElementById('resultadosPecho').addEventListener('change', function () {
+            var selectedDay = this.value;
+            var selectedType = document.getElementById('chartType').value;
+            renderChart(selectedType, selectedDay);
+        });
+        
+
     });
 </script>
 @stop

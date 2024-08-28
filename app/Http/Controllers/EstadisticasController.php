@@ -57,7 +57,7 @@ class EstadisticasController extends Controller
             }
         }
 
-        return view('estadisticas.index', compact('diasDisponibles', 'porcentajesPorDia', 'ultimoDia'));
+        return view('estadisticas.index', compact('diasDisponibles', 'porcentajesPorDia', 'ultimoDia', 'porcentajeSuperadoPecho', 'porcentajeSuperadoBiceps', 'porcentajeSuperadoPierna', 'porcentajeSuperadoHombro' ));
     }
 
     private function calcularPorcentaje($userMetric, $metricName, $userId)
@@ -81,10 +81,10 @@ class EstadisticasController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'pecho' => 'required|numeric',
-            'biceps' => 'required|numeric',
-            'pierna' => 'required|numeric',
-            'hombro' => 'required|numeric',
+            'pecho' => 'numeric',
+            'biceps' => 'numeric',
+            'pierna' => 'numeric',
+            'hombro' => 'numeric',
             'dia' => 'required|date',
         ]);
 
