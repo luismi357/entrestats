@@ -3,7 +3,28 @@
 @section('title', 'Estadisticas')
 
 @section('content')
-
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Pecho</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Aquí va el contenido del modal -->
+          <div id="resultadosPecho"><h4>Has superado al <span id="pecho-porcentaje">{{ $porcentajeSuperadoPecho }}</span>% de los usuarios en pecho</h4></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="container-fluid">
     <div class="row justify-content-center">  
         <div class="col-md-6">
@@ -34,14 +55,32 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-md-12">
-            <div id="resultadosPecho">Has superado al {{ $porcentajeSuperadoPecho }}% de los usuarios en pecho</div>
-            <div id="resultadosPecho">Has superado al {{ $porcentajeSuperadoBiceps }}% de los usuarios en biceps</div>
-            <div id="resultadosPecho">Has superado al {{ $porcentajeSuperadoPierna }}% de los usuarios en pierna</div>
-            <div id="resultadosPecho">Has superado al {{ $porcentajeSuperadoHombro }}% de los usuarios en hombro</div>
+        <span style="margin-top:2%;">
+            
+            <div id="resultadosBiceps" class="col-md-12S"><h3>Has superado al <span id="biceps-porcentaje">{{ $porcentajeSuperadoBiceps }}</span>% de los usuarios en bíceps</h3></div>
+            <div id="resultadosPierna"><h3>Has superado al <span id="pierna-porcentaje">{{ $porcentajeSuperadoPierna }}</span>% de los usuarios en pierna</h3></div>
+            <div id="resultadosHombro"><h3>Has superado al <span id="hombro-porcentaje">{{ $porcentajeSuperadoHombro }}</span>% de los usuarios en hombro</h3></div>
+        </span>
+    </div>
+
+      
+    <div class="container text-center">
+        <div class="row">
+          <div class="col" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="cursor:pointer;">
+            <img src="https://www.shareicon.net/data/128x128/2016/06/18/596432_torso_512x512.png" alt="">
+          </div>
+          <div class="col">
+            <img src="https://cdn-icons-png.flaticon.com/512/787/787343.png" style="width: 50%;" alt="">
+          </div>
+          <div class="col">
+            <img src="https://cdn-icons-png.flaticon.com/512/5850/5850570.png" style="width: 53%;" alt="">
+          </div>
+          <div class="col">
+            <img src="https://www.shareicon.net/data/128x128/2016/06/18/596479_hand_512x512.png" alt="">
+          </div>
         </div>
     </div>
-    
+
     <div class="container-fluid" style="margin-top: 2%;">
         <div class="row">
             <div class="col-md-1"></div>
@@ -63,11 +102,21 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Función para renderizar el gráfico según el tipo seleccionado
         const porcentajesPorDia = @json($porcentajesPorDia);
+
+        function updateFrases(data) {
+            document.getElementById('pecho-porcentaje').innerText = data.pecho || 0;
+            document.getElementById('biceps-porcentaje').innerText = data.biceps || 0;
+            document.getElementById('pierna-porcentaje').innerText = data.pierna || 0;
+            document.getElementById('hombro-porcentaje').innerText = data.hombro || 0;
+        }
+
         function renderChart(chartType, selectedDay) {
             const data = porcentajesPorDia[selectedDay] || {pecho: 0, biceps: 0, pierna: 0, hombro: 0};
             Highcharts.chart('containerLine', {
@@ -94,6 +143,7 @@
                     enabled: true // Habilitar la exportación
                 }
             });
+            updateFrases(data);
         }
 
         // Renderizar el gráfico inicialmente con el tipo 'line'
@@ -118,6 +168,7 @@
             var selectedType = document.getElementById('chartType').value;
             renderChart(selectedType, selectedDay);
         });
+        
         
 
     });
