@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,9 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/estadisticas/create', [EstadisticasController::class, 'create'])->name('estadisticas.create');
     Route::post('/estadisticas', [EstadisticasController::class, 'store'])->name('estadisticas.store');
     Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas.index');
+    Route::get('/estadisticasGeneral', [EstadisticasController::class, 'generalEstadisticas'])->name('imc.generalEstadisticas');
     Route::get('/imc', [imcController::class, 'index'])->name('imc.index');
     Route::get('/imc/create', [imcController::class, 'create'])->name('imc.create');
     Route::post('/imc', [imcController::class, 'calculateImc'])->name('imc.calculateImc');
     Route::get('/resultado', [imcController::class, 'resultado'])->name('imc.resultado');
-    
 });

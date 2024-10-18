@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Estadisticas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EstadisticasController extends Controller
@@ -32,9 +33,9 @@ class EstadisticasController extends Controller
             // Obtener las estadísticas del usuario para ese día
             $estadisticasDia = Estadisticas::where('id_user', $userId)
                 ->where('dia', $dia)
-                ->orderBy('created_at','desc')
+                ->orderBy('created_at', 'desc')
                 ->first();
-    
+
             if ($estadisticasDia) {
                 $pechoUser = $estadisticasDia->pecho;
                 $bicepsUser = $estadisticasDia->biceps;
@@ -57,7 +58,7 @@ class EstadisticasController extends Controller
             }
         }
 
-        return view('estadisticas.index', compact('diasDisponibles', 'porcentajesPorDia', 'ultimoDia', 'porcentajeSuperadoPecho', 'porcentajeSuperadoBiceps', 'porcentajeSuperadoPierna', 'porcentajeSuperadoHombro' ));
+        return view('estadisticas.index', compact('diasDisponibles', 'porcentajesPorDia', 'ultimoDia', 'porcentajeSuperadoPecho', 'porcentajeSuperadoBiceps', 'porcentajeSuperadoPierna', 'porcentajeSuperadoHombro'));
     }
 
     private function calcularPorcentaje($userMetric, $metricName, $userId)
@@ -77,6 +78,12 @@ class EstadisticasController extends Controller
     {
         return view('estadisticas.create');
     }
+
+    public function generalEstadisticas()
+    {
+        return view('estadisticas.general');
+    }
+
 
     public function store(Request $request)
     {
@@ -107,4 +114,3 @@ class EstadisticasController extends Controller
         return redirect()->route('estadisticas.create')->with('success', 'Estadística guardada exitosamente');
     }
 }
-?>

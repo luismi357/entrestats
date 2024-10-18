@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.centered-element {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }

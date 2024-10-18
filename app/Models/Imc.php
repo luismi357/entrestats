@@ -18,6 +18,7 @@ class Imc extends Model
         'resultado',
         'created_at',
         'updated_at',
+        'sexo',
     ];
     // Relación con el modelo User
     public function user()
