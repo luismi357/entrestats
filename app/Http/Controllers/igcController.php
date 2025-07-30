@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Imc;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Igc;
 
-class ImcController extends Controller
+class IgcController extends Controller
 {
     public function __construct()
     {
@@ -17,7 +16,7 @@ class ImcController extends Controller
     public function index(){
         $userId = Auth::id();
         
-        return view('imc.index');
+        return view('igc.index');
     }
 
     public function calculateImc(Request $request)
@@ -54,6 +53,4 @@ class ImcController extends Controller
 
         return view('imc.resultado',compact('calculoImc','sexo'));
     }
-
- 
 }

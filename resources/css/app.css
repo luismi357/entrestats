@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.centered-element {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .text-shadow-strong {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
