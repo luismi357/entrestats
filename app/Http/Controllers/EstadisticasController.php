@@ -18,6 +18,14 @@ class EstadisticasController extends Controller
     {
         $userId = Auth::id();
 
+        // Inicializar variables para evitar errores
+        $diasDisponibles = [];
+        $porcentajesPorDia = [];
+        $porcentajeSuperadoPecho = null;
+        $porcentajeSuperadoBiceps = null;
+        $porcentajeSuperadoPierna = null;
+        $porcentajeSuperadoHombro = null;
+
         // Obtener los días disponibles de las estadísticas
         $diasDisponibles = Estadisticas::where('id_user', $userId)
             ->orderBy('dia', 'desc')
@@ -58,7 +66,14 @@ class EstadisticasController extends Controller
             }
         }
 
-        return view('estadisticas.index', compact('diasDisponibles', 'porcentajesPorDia', 'ultimoDia', 'porcentajeSuperadoPecho', 'porcentajeSuperadoBiceps', 'porcentajeSuperadoPierna', 'porcentajeSuperadoHombro'));
+        return view('estadisticas.index', compact(
+            'diasDisponibles',
+             'porcentajesPorDia', 
+             'ultimoDia',
+              'porcentajeSuperadoPecho', 
+              'porcentajeSuperadoBiceps',
+               'porcentajeSuperadoPierna', 
+               'porcentajeSuperadoHombro'));
     }
 
     private function calcularPorcentaje($userMetric, $metricName, $userId)

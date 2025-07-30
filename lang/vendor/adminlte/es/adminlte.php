@@ -2,6 +2,7 @@
 
 return [
 
+    'sexo' => 'Sexo',
     'full_name' => 'Nombre completo',
     'email' => 'Email',
     'password' => 'Contraseña',

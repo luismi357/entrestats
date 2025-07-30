@@ -2,30 +2,32 @@
 
 @section('title', 'Estadisticas')
 
+@section('css')
+    <style>
+        .text-shadow-strong {
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        }
+        .card-hover {
+            position: relative;
+            overflow: hidden;
+            transition: filter 0.3s ease;
+        }
+        .card-hover:hover {
+            filter: brightness(0.6);
+        }
+    </style>
+@stop
+
 @section('content')
     <div class="container-fluid">
-        <!--<div class="row">
-            <h1 style="text-align: center;!important">ESTADISTICAS GENERALES ORDENADAS POR:</h1>
-            <div style="margin:2%; height:255px; width:auto; background-color:grey;" class="col-lg-5 col-md-5 col-sm-5">
-                <a href="{{ route('estadisticas.index') }}" class="btn btn-warning"><h1 style="text-align: center; vertical-align: baseline;">DIAS</h1></a>
-            </div>
-            <div style="margin:2%; height:255px; background-color:grey;" class="col-lg-5 col-md-5 col-sm-5">
-                <h1>hola</h1>
-            </div>
-            <div style="margin:2%; height:255px; background-color:grey;" class="col-lg-5 col-md-5 col-sm-5">
-                <h1>hola</h1>
-            </div>
-            <div style="margin:2%; height:255px; background-color:grey;" class="col-lg-5 col-md-5 col-sm-5">
-                <h1>hola</h1>
-            </div>-->
         <div class="container px-4 py-5" id="custom-cards">
-            <h2 class="pb-2 border-bottom">Cards personalizadas</h2>
+            <h2 class="pb-2 border-bottom">Estadisticas personalizadas</h2>
             <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
                 <div class="col">
-                    <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
-                        style="background-image: url('unsplash-photo-1.jpg');">
-                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Título corto, sobrecubierta larga</h2>
+                    <div class="card-hover card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
+                        style="background-image: url('vendor/adminlte/dist/img/pecho.jpg'); background-size: 200% auto;">
+                        <div class=" d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold text-center text-shadow-strong">PECHO</h2>
                             <ul class="d-flex list-unstyled mt-auto">
                                 <li class="me-auto">
                                     <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32"
@@ -49,10 +51,9 @@
                 </div>
                 <div class="col">
                     <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
-                        style="background-image: url('unsplash-photo-2.jpg');">
+                        style="background-image: url('vendor/adminlte/dist/img/biceps.jpg'); background-size: 168% auto;">
                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Título mucho más largo que se ajusta a varias
-                                líneas</h2>
+                            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold text-shadow-strong" style="text-align:center;">BICEPS</h2>
                             <ul class="d-flex list-unstyled mt-auto">
                                 <li class="me-auto">
                                     <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32"
@@ -76,9 +77,9 @@
                 </div>
                 <div class="col">
                     <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
-                        style="background-image: url('unsplash-photo-3.jpg');">
+                        style="background-image: url('vendor/adminlte/dist/img/pierna.jpg'); background-size: 168% auto;">
                         <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-                            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Otro título más largo se encuentra aquí.</h2>
+                            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold text-shadow-strong" style="text-align:center;">PIERNAS</h2>
                             <ul class="d-flex list-unstyled mt-auto">
                                 <li class="me-auto">
                                     <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32"
