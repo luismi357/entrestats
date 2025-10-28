@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Estadisticas')
+@section('title', 'Dashboard')
 
 @section('css')
     <style>

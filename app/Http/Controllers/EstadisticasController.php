@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estadisticas;
+use App\Models\GrupoMuscular;
+use App\Models\EjercicioPorGrupoMuscular;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -76,6 +78,19 @@ class EstadisticasController extends Controller
                'porcentajeSuperadoHombro'));
     }
 
+    public function create()
+    {
+        $ejerciciosGrupoPecho = EjercicioPorGrupoMuscular::where('grupo_muscular_id', 1)
+        ->orderBy('nombre_ejercicio')
+        ->get();
+
+        $ejerciciosGrupoBiceps= EjercicioPorGrupoMuscular::where('grupo_muscular_id', 2)
+        ->orderBy('nombre_ejercicio')
+        ->get();
+
+    return view('estadisticas.create', compact('ejerciciosGrupoPecho','ejerciciosGrupoBiceps'));
+    }
+
     private function calcularPorcentaje($userMetric, $metricName, $userId)
     {
         $estadisticasMaxMetric = Estadisticas::select('id_user', DB::raw("MAX($metricName) as max_$metricName"))
@@ -89,10 +104,6 @@ class EstadisticasController extends Controller
         return $totalUsuarios ? ($totalMenor / $totalUsuarios) * 100 : 0;
     }
 
-    public function create()
-    {
-        return view('estadisticas.create');
-    }
 
     public function generalEstadisticas()
     {

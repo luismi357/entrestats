@@ -319,28 +319,35 @@ return [
             'text' => 'Home',
             'url' => '/home',
             'icon' => 'far fa-fw fa-file',
-            'label' => 4,
+            
             'label_color' => 'success',
         ],
         [
             'text' => 'pages',
             'url' => 'admin/pages',
             'icon' => 'far fa-fw fa-file',
-            'label' => 4,
+            
+            'label_color' => 'success',
+        ],
+        [
+            'text' => 'General',
+            'url' => '/estadisticasGeneral',
+            'icon' => 'far fa-fw fa-file',
+            
             'label_color' => 'success',
         ],
         [
             'text' => 'Estadisticas',
-            'url' => '/estadisticasGeneral',
+            'url' => '/estadisticas',
             'icon' => 'far fa-fw fa-file',
-            'label' => 4,
+            
             'label_color' => 'success',
         ],
         [
             'text' => 'IMC',
             'url' => '/imc',
             'icon' => 'far fa-fw fa-file',
-            'label' => 4,
+            
             'label_color' => 'success',
         ],
         ['header' => 'account_settings'],

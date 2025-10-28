@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EstadisticasController;
-use App\Http\Controllers\imcController;
+use App\Http\Controllers\ImcController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ChatController;
 
@@ -40,8 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/estadisticas', [EstadisticasController::class, 'store'])->name('estadisticas.store');
     Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas.index');
     Route::get('/estadisticasGeneral', [EstadisticasController::class, 'generalEstadisticas'])->name('imc.generalEstadisticas');
-    Route::get('/imc', [imcController::class, 'index'])->name('imc.index');
-    Route::get('/imc/create', [imcController::class, 'create'])->name('imc.create');
-    Route::post('/imc', [imcController::class, 'calculateImc'])->name('imc.calculateImc');
-    Route::get('/resultado', [imcController::class, 'resultado'])->name('imc.resultado');
+    Route::get('/imc', [ImcController::class, 'index'])->name('imc.index');
+    Route::get('/imc/create', [ImcController::class, 'create'])->name('imc.create');
+    Route::post('/imc', [ImcController::class, 'calculateImc'])->name('imc.calculateImc');
+    Route::get('/resultado', [ImcController::class, 'resultado'])->name('imc.resultado');
 });
