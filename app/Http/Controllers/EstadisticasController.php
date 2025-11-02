@@ -20,75 +20,50 @@ class EstadisticasController extends Controller
     {
         $userId = Auth::id();
 
-        // Inicializar variables para evitar errores
-        $diasDisponibles = [];
-        $porcentajesPorDia = [];
-        $porcentajeSuperadoPecho = null;
-        $porcentajeSuperadoBiceps = null;
-        $porcentajeSuperadoPierna = null;
-        $porcentajeSuperadoHombro = null;
-
-        // Obtener los días disponibles de las estadísticas
+        // Obtener todos los días distintos donde el usuario registró algo
         $diasDisponibles = Estadisticas::where('id_user', $userId)
-            ->orderBy('dia', 'desc')
-            ->pluck('dia')
-            ->unique()
-            ->toArray();
+            ->select(DB::raw('DATE(dia) as fecha'))
+            ->distinct()
+            ->orderBy('fecha', 'desc')
+            ->pluck('fecha');
 
-        $porcentajesPorDia = [];
+        // Array final de datos
+        $estadisticasPorDia = [];
 
-        $ultimoDia = count($diasDisponibles) > 0 ? $diasDisponibles[0] : null;
-
-        foreach ($diasDisponibles as $dia) {
-            // Obtener las estadísticas del usuario para ese día
-            $estadisticasDia = Estadisticas::where('id_user', $userId)
-                ->where('dia', $dia)
-                ->orderBy('created_at', 'desc')
-                ->first();
-
-            if ($estadisticasDia) {
-                $pechoUser = $estadisticasDia->pecho;
-                $bicepsUser = $estadisticasDia->biceps;
-                $piernaUser = $estadisticasDia->pierna;
-                $hombroUser = $estadisticasDia->hombro;
-
-                // Calcular porcentajes para ese día
-                $porcentajeSuperadoPecho = $this->calcularPorcentaje($pechoUser, 'pecho', $userId);
-                $porcentajeSuperadoBiceps = $this->calcularPorcentaje($bicepsUser, 'biceps', $userId);
-                $porcentajeSuperadoPierna = $this->calcularPorcentaje($piernaUser, 'pierna', $userId);
-                $porcentajeSuperadoHombro = $this->calcularPorcentaje($hombroUser, 'hombro', $userId);
-
-                // Guardar los porcentajes en el array
-                $porcentajesPorDia[$dia] = [
-                    'pecho' => $porcentajeSuperadoPecho,
-                    'biceps' => $porcentajeSuperadoBiceps,
-                    'pierna' => $porcentajeSuperadoPierna,
-                    'hombro' => $porcentajeSuperadoHombro,
-                ];
-            }
+        foreach ($diasDisponibles as $fecha) {
+            // Obtener los registros de ese día agrupados por grupo muscular
+            $grupos = Estadisticas::where('id_user', $userId)
+                ->whereDate('dia', $fecha)
+                ->select(
+                    'grupo_muscular_id',
+                    DB::raw('AVG(peso) as promedio_peso'),
+                    DB::raw('SUM(series) as total_series'),
+                    DB::raw('SUM(reps) as total_reps')
+                )
+                ->groupBy('grupo_muscular_id')
+                ->with('grupoMuscular:id,nombre_grupo') // para traer el nombre
+                ->get();
+    
+            $estadisticasPorDia[$fecha] = $grupos;
         }
 
-        return view('estadisticas.index', compact(
-            'diasDisponibles',
-             'porcentajesPorDia', 
-             'ultimoDia',
-              'porcentajeSuperadoPecho', 
-              'porcentajeSuperadoBiceps',
-               'porcentajeSuperadoPierna', 
-               'porcentajeSuperadoHombro'));
+        return view('estadisticas.index', compact('diasDisponibles', 'estadisticasPorDia'));
+    }
+
+
+    public function getEjerciciosByGrupo($grupoId)
+    {
+        $ejercicios = EjercicioPorGrupoMuscular::where('grupo_muscular_id', $grupoId)
+            ->orderBy('nombre_ejercicio')
+            ->get();
+
+        return response()->json($ejercicios);
     }
 
     public function create()
     {
-        $ejerciciosGrupoPecho = EjercicioPorGrupoMuscular::where('grupo_muscular_id', 1)
-        ->orderBy('nombre_ejercicio')
-        ->get();
-
-        $ejerciciosGrupoBiceps= EjercicioPorGrupoMuscular::where('grupo_muscular_id', 2)
-        ->orderBy('nombre_ejercicio')
-        ->get();
-
-    return view('estadisticas.create', compact('ejerciciosGrupoPecho','ejerciciosGrupoBiceps'));
+        $gruposMusculares = GrupoMuscular::orderBy('nombre_grupo')->get();
+        return view('estadisticas.create', compact('gruposMusculares'));
     }
 
     private function calcularPorcentaje($userMetric, $metricName, $userId)
@@ -113,30 +88,29 @@ class EstadisticasController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'pecho' => 'numeric',
-            'biceps' => 'numeric',
-            'pierna' => 'numeric',
-            'hombro' => 'numeric',
+        $request->validate([
             'dia' => 'required|date',
+            'grupos' => 'required|array|min:1',
+            'grupos.*.grupo_id' => 'required|exists:grupos_musculares,id',
+            'grupos.*.ejercicio_id' => 'required|exists:ejercicios_por_grupo_muscular,id',
+            'grupos.*.peso' => 'required|numeric|min:1',
+            'grupos.*.series' => 'required|numeric|min:1',
+            'grupos.*.reps' => 'required|numeric|min:1',
         ]);
 
-        $userId = Auth::id();
-
-        if (is_null($userId)) {
-            return redirect()->route('estadisticas.create')->withErrors('El usuario no está autenticado');
+        foreach ($request->grupos as $grupo) {
+            Estadisticas::create([
+                'id_user' => auth()->id(),
+                'grupo_muscular_id' => $grupo['grupo_id'],
+                'ejercicio_id' => $grupo['ejercicio_id'],
+                'peso' => $grupo['peso'],
+                'series' => $grupo['series'],
+                'reps' => $grupo['reps'],
+                'dia' => $request->dia,
+            ]);
         }
 
-        // Crear una nueva estadística con el ID del usuario autenticado
-        $estadistica = new Estadisticas();
-        $estadistica->id_user = $userId;
-        $estadistica->pecho = $request->input('pecho');
-        $estadistica->biceps = $request->input('biceps');
-        $estadistica->pierna = $request->input('pierna');
-        $estadistica->hombro = $request->input('hombro');
-        $estadistica->dia = $request->input('dia');
-        $estadistica->save();
-
-        return redirect()->route('estadisticas.create')->with('success', 'Estadística guardada exitosamente');
+        return redirect()->route('estadisticas.create')
+            ->with('success', 'Tus estadísticas se han guardado correctamente.');
     }
 }

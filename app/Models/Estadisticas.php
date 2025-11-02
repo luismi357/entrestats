@@ -12,10 +12,11 @@ class Estadisticas extends Model
     protected $fillable = [
         'id',
         'id_user',
-        'pecho',
-        'biceps',
-        'pierna',
-        'hombro',
+        'grupo_muscular_id',
+        'ejercicio_id',
+        'peso',
+        'series',
+        'reps',
         'dia',
     ];
 

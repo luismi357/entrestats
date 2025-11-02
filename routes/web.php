@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EstadisticasController;
 use App\Http\Controllers\ImcController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ChatController;
 
@@ -32,6 +33,8 @@ Route::post('/messages', [ChatController::class, 'sendMessage']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/grupos/{grupoId}/ejercicios', [EstadisticasController::class, 'getEjerciciosByGrupo']);
 
 
 
