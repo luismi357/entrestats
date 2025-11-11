@@ -25,4 +25,14 @@ class Estadisticas extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function grupoMuscular()
+    {
+        return $this->belongsTo(GrupoMuscular::class, 'grupo_muscular_id');
+    }
+    // 🔹 Relación con EjercicioPorGrupoMuscular
+    public function ejercicio()
+    {
+        return $this->belongsTo(EjercicioPorGrupoMuscular::class, 'ejercicio_id');
+    }
 }

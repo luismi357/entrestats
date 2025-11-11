@@ -34,7 +34,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/grupos/{grupoId}/ejercicios', [EstadisticasController::class, 'getEjerciciosByGrupo']);
+Route::get('/grupos/{id}/ejercicios', [EstadisticasController::class, 'getEjerciciosByGrupo'])
+    ->name('grupos.ejercicios');
 
 
 
