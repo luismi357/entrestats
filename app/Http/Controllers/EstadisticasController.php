@@ -6,6 +6,8 @@ use App\Models\Estadisticas;
 use App\Models\GrupoMuscular;
 use App\Models\EjercicioPorGrupoMuscular;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -57,16 +59,32 @@ class EstadisticasController extends Controller
 
         return view('estadisticas.index', compact('diasDisponibles', 'estadisticasPorDia', 'ultimoDia'));
     }
-
     public function getEjerciciosByGrupo($grupoId)
     {
         $ejercicios = EjercicioPorGrupoMuscular::where('grupo_muscular_id', $grupoId)
             ->orderBy('nombre_ejercicio')
-            ->get();
+            ->get()
+            ->map(function ($ej) {
+    
+                // 👉 Nombre del archivo a partir del nombre del ejercicio
+                $nombreArchivo = Str::slug($ej->nombre_ejercicio) . '.gif';
+                
 
+                $ruta = 'ejercicios/' . $nombreArchivo;
+    
+                return [
+                    'id' => $ej->id,
+                    'nombre_ejercicio' => $ej->nombre_ejercicio,
+    
+                    // 👉 Si existe la imagen usa esa, si no usa default
+                    'imagen' => Storage::disk('public')->exists($ruta)
+                        ? asset('storage/' . $ruta)
+                        : asset('storage/ejercicios/default.png'),
+                ];
+            });
+    
         return response()->json($ejercicios);
     }
-
     public function create()
     {
         $gruposMusculares = GrupoMuscular::orderBy('nombre_grupo')->get();
@@ -74,30 +92,47 @@ class EstadisticasController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'dia' => 'required|date',
-            'grupos' => 'required|array|min:1',
-            'grupos.*.grupo_id' => 'required|exists:grupos_musculares,id',
-            'grupos.*.ejercicio_id' => 'required|exists:ejercicios_por_grupo_muscular,id',
-            'grupos.*.peso' => 'required|numeric|min:1',
-            'grupos.*.series' => 'required|numeric|min:1',
-            'grupos.*.reps' => 'required|numeric|min:1',
-        ]);
+{
+    $request->validate([
+        'dia' => 'required|date',
+        'grupos' => 'required|array|min:1',
+        'grupos.*.grupo_id' => 'required|exists:grupos_musculares,id',
+        'grupos.*.ejercicios' => 'nullable|array',
+        'grupos.*.ejercicios.*.peso' => 'nullable|numeric|min:1',
+        'grupos.*.ejercicios.*.series' => 'nullable|integer|min:1',
+        'grupos.*.ejercicios.*.reps' => 'nullable|integer|min:1',
+    ]);
 
-        foreach ($request->grupos as $grupo) {
+    foreach ($request->grupos as $grupo) {
+
+        if (empty($grupo['ejercicios'])) {
+            continue;
+        }
+
+        foreach ($grupo['ejercicios'] as $ejercicioId => $data) {
+
+            // 🔒 Solo guardamos ejercicios completos
+            if (
+                empty($data['peso']) ||
+                empty($data['series']) ||
+                empty($data['reps'])
+            ) {
+                continue;
+            }
+
             Estadisticas::create([
                 'id_user' => auth()->id(),
                 'grupo_muscular_id' => $grupo['grupo_id'],
-                'ejercicio_id' => $grupo['ejercicio_id'],
-                'peso' => $grupo['peso'],
-                'series' => $grupo['series'],
-                'reps' => $grupo['reps'],
+                'ejercicio_id' => $ejercicioId,
+                'peso' => $data['peso'],
+                'series' => $data['series'],
+                'reps' => $data['reps'],
                 'dia' => $request->dia,
             ]);
         }
+    }
 
-        return redirect()->route('estadisticas.index')
-            ->with('success', 'Tus estadísticas se han guardado correctamente.');
+    return redirect()->route('estadisticas.index')
+        ->with('success', 'Tus estadísticas se han guardado correctamente 💪');
     }
 }

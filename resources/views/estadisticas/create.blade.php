@@ -38,7 +38,7 @@
                     </select>
 
                     {{-- EJERCICIOS --}}
-                    <div class="ejercicio-container row row-cols-4 g-3 mt-3"></div>
+                    <div class="ejercicio-container row row-cols-3 g-3 mt-3"></div>
 
                 </div>
             </div>
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!grupoId) return;
 
-        const response = await fetch(`/grupos/${grupoId}/ejercicios`);
+        const response = await fetch(`{{ route('grupos.ejercicios', ':id') }}`.replace(':id', grupoId));
         const ejercicios = await response.json();
 
         ejercicios.forEach(ej => {
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         <img src="${ej.imagen}"
                              class="mx-auto"
-                             style="height:90px; object-fit:contain">
+                             style="height:200px; object-fit:contain">
 
                         <div class="card-body text-center">
 
