@@ -36,7 +36,7 @@
 @stop
 
 @section('js')
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@11/highcharts.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const estadisticasPorDia = @json($estadisticasPorDia);

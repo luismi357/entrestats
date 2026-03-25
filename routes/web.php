@@ -16,12 +16,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/register', [RegisterController::class, 'create'])->name('create');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+
+   
+
 
 require __DIR__.'/auth.php';
 
@@ -34,8 +31,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/grupos/{grupoid}/ejercicios', [EstadisticasController::class, 'getEjerciciosByGrupo'])
-    ->name('grupos.ejercicios');
+
 
 
 
@@ -48,4 +44,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/imc/create', [ImcController::class, 'create'])->name('imc.create');
     Route::post('/imc', [ImcController::class, 'calculateImc'])->name('imc.calculateImc');
     Route::get('/resultado', [ImcController::class, 'resultado'])->name('imc.resultado');
+    
+    Route::get('/grupos/{grupoid}/ejercicios', [EstadisticasController::class, 'getEjerciciosByGrupo'])
+    ->name('grupos.ejercicios');
+
+    //USUARIOS
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/register', [RegisterController::class, 'create'])->name('create');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
