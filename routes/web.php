@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EstadisticasController;
 use App\Http\Controllers\ImcController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ChatController;
 
@@ -32,7 +32,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-
+//USUARIOS
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+ Route::get('/register', [RegisterController::class, 'showRegistrationForm']);
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
 Route::middleware('auth')->group(function () {
@@ -48,11 +53,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/grupos/{grupoid}/ejercicios', [EstadisticasController::class, 'getEjerciciosByGrupo'])
     ->name('grupos.ejercicios');
 
-    //USUARIOS
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/register', [RegisterController::class, 'create'])->name('create');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
 
 });
