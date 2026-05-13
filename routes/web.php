@@ -33,14 +33,16 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 //USUARIOS
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+
+
  Route::get('/register', [RegisterController::class, 'showRegistrationForm']);
-Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 
 
 Route::middleware('auth')->group(function () {
+     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/estadisticas/create', [EstadisticasController::class, 'create'])->name('estadisticas.create');
     Route::post('/estadisticas', [EstadisticasController::class, 'store'])->name('estadisticas.store');
     Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas.index');
