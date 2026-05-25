@@ -76,6 +76,8 @@ class ProfileController extends Controller
             ->with('success', 'Perfil actualizado correctamente');
     }
 
+    
+
     /**
      * Eliminar cuenta
      */
