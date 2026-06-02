@@ -7,6 +7,8 @@ use App\Http\Controllers\ImcController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\IniciacionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,7 +53,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/imc/create', [ImcController::class, 'create'])->name('imc.create');
     Route::post('/imc', [ImcController::class, 'calculateImc'])->name('imc.calculateImc');
     Route::get('/resultado', [ImcController::class, 'resultado'])->name('imc.resultado');
-    
+    Route::get('/formulario', function () {
+        return view('training');
+    });
+    Route::post('/guardar-respuestas', [IniciacionController::class, 'guardarRespuestas']);
+    Route::get('/generar-formulario', [IniciacionController::class, 'generarPdf']);
     Route::get('/grupos/{grupoid}/ejercicios', [EstadisticasController::class, 'getEjerciciosByGrupo'])
     ->name('grupos.ejercicios');
 
