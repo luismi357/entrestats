@@ -10,6 +10,7 @@
         "inertiajs/inertia-laravel": "*",
         "jeroennoten/laravel-adminlte": "^3.12",
         "laravel/framework": "^11.9",
+        "laravel/sanctum": "*",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
         "laraveldaily/laravel-charts": "^0.2.3",

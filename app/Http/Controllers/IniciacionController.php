@@ -36,7 +36,7 @@ $pdf->useTemplate($template);
                 $pdf->SetFont('Times', 'B', 100);
                 $pdf->SetTextColor(255, 255, 255);
 
-                $y = 345;
+                $y = 342;
                 $col = 0;
 
                 foreach ($respuestas as $respuesta) {

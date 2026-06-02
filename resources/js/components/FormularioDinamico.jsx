@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 export default function FormularioDinamico() {
 
     const preguntas = [
-        '¿Cuantos años tienes?',
+        'Nombre',
         '¿Cuanto pesas?',
         '¿Cuanto mides?',
         '¿Tienes problemas de corazon?',
         '¿Cuantos dias a la semana puedes entrenar?',
         '¿Cuanto tiempo puedes ir a entrenar?',
+        '¿Que edad tienes?',
         '¿Qué objetivo tienes este año?',
     ];
 
