@@ -32,6 +32,22 @@
     <div class="text-center mt-4">
         <a href="{{ route('estadisticas.create') }}" class="btn btn-warning">Actualizar Datos</a>
     </div>
+
+    <hr class="my-4">
+    <h4 class="text-center mb-3">📄 Descargar PDF de Estadísticas</h4>
+    <form method="GET" action="{{ route('estadisticas.pdf') }}" class="row justify-content-center">
+        <div class="col-md-3">
+            <label for="from">Desde:</label>
+            <input type="date" id="from" name="from" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <label for="to">Hasta:</label>
+            <input type="date" id="to" name="to" class="form-control" required>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-danger w-100">Descargar PDF</button>
+        </div>
+    </form>
 </div>
 @stop
 

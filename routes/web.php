@@ -26,8 +26,18 @@ require __DIR__.'/auth.php';
 
 //Chat
 Route::get('/chat', [ChatController::class, 'index'])->middleware('auth');
-Route::get('/messages', [ChatController::class, 'fetchMessages']);
-Route::post('/messages', [ChatController::class, 'sendMessage']);
+Route::get('/messages', [ChatController::class, 'fetchMessages'])->middleware('auth');
+Route::post('/messages', [ChatController::class, 'sendMessage'])->middleware('auth');
+
+// Admin Chat
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/chat', [App\Http\Controllers\AdminChatController::class, 'index'])->name('chat');
+    Route::get('/chat/{user}', [App\Http\Controllers\AdminChatController::class, 'conversation'])->name('chat.conversation');
+    Route::post('/chat/{user}/send', [App\Http\Controllers\AdminChatController::class, 'sendMessage'])->name('chat.send');
+
+    Route::get('/formularios', [App\Http\Controllers\AdminFormularioController::class, 'index'])->name('formularios.index');
+    Route::get('/formularios/{user}', [App\Http\Controllers\AdminFormularioController::class, 'show'])->name('formularios.show');
+});
 
 Auth::routes();
 
@@ -48,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/estadisticas/create', [EstadisticasController::class, 'create'])->name('estadisticas.create');
     Route::post('/estadisticas', [EstadisticasController::class, 'store'])->name('estadisticas.store');
     Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas.index');
+    Route::get('/estadisticas/pdf', [EstadisticasController::class, 'generarPdf'])->name('estadisticas.pdf');
     Route::get('/estadisticasGeneral', [EstadisticasController::class, 'generalEstadisticas'])->name('imc.generalEstadisticas');
     Route::get('/imc', [ImcController::class, 'index'])->name('imc.index');
     Route::get('/imc/create', [ImcController::class, 'create'])->name('imc.create');
@@ -55,6 +66,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/resultado', [ImcController::class, 'resultado'])->name('imc.resultado');
     Route::get('/formulario', function () {
         return view('training');
+    });
+    Route::get('/formulario/ya-enviado', function () {
+        return response()->json(['enviado' => \App\Models\FormSubmission::where('user_id', Auth::id())->exists()]);
     });
     Route::post('/guardar-respuestas', [IniciacionController::class, 'guardarRespuestas']);
     Route::get('/generar-formulario', [IniciacionController::class, 'generarPdf']);

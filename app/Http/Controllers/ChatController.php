@@ -16,39 +16,28 @@ class ChatController extends Controller
 
     public function fetchMessages()
     {
-        return Message::with('user')->get();
+        $userId = Auth::id();
+
+        return Message::with('user')
+            ->where(function ($q) use ($userId) {
+                $q->where('user_id', $userId)->whereNull('receiver_id')
+                  ->orWhere('receiver_id', $userId);
+            })
+            ->orderBy('created_at', 'asc')
+            ->take(50)
+            ->get();
     }
 
     public function sendMessage(Request $request)
     {
-        $message = Auth::user()->messages()->create([
-            'message' => $request->input('message')
+        $message = Message::create([
+            'user_id' => Auth::id(),
+            'receiver_id' => null,
+            'content' => $request->input('content'),
         ]);
 
         broadcast(new MessageSent($message))->toOthers();
 
         return ['status' => 'Message Sent!'];
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            // Valida los datos recibidos
-            $request->validate([
-                'user_id' => 'required|exists:users,id',
-                'content' => 'required|string',
-            ]);
-
-            // Guarda el mensaje
-            $message = Message::create([
-                'user_id' => $request->user_id,
-                'content' => $request->content,
-            ]);
-
-            return response()->json(['message' => 'Mensaje enviado', 'data' => $message], 201);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
     }
 }

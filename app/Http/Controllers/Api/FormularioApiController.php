@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\FormSubmission;
 use setasign\Fpdi\Fpdi;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,12 @@ class FormularioApiController extends Controller
             if (!$respuestas || !is_array($respuestas)) {
                 return response()->json(['error' => 'Faltan datos de respuestas'], 400);
             }
+
+            // Guardar en BD
+            FormSubmission::updateOrCreate(
+                ['user_id' => $request->user()->id],
+                ['respuestas' => $respuestas]
+            );
 
             $pdf = new Fpdi();
             $plantilla = storage_path('app/public/plantilla.pdf');
@@ -50,5 +57,11 @@ class FormularioApiController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function yaEnviado(Request $request)
+    {
+        $existe = FormSubmission::where('user_id', $request->user()->id)->exists();
+        return response()->json(['enviado' => $existe]);
     }
 }

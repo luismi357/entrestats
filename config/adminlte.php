@@ -68,7 +68,7 @@ return [
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'Entrestats',
 
     /*
     |--------------------------------------------------------------------------
@@ -135,7 +135,7 @@ return [
 
     'usermenu_enabled' => true,
     'usermenu_header' => false,
-    'usermenu_header_class' => 'bg-primary',
+    'usermenu_header_class' => 'bg-warning',
     'usermenu_image' => true,
     'usermenu_desc' => true,
     'usermenu_profile_url' => false,
@@ -196,9 +196,9 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-dark-warning elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav' => 'navbar-warning navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -333,6 +333,19 @@ return [
             'text' => 'Formulario inicio',
             'url' => 'formulario',
             'icon' => 'fas fa-fw fa-user',
+            'can' => 'submit-form',
+        ],
+        [
+            'text' => 'Admin Chat',
+            'url' => '/admin/chat',
+            'icon' => 'fas fa-fw fa-comments',
+            'can' => 'is-admin',
+        ],
+        [
+            'text' => 'Admin Formularios',
+            'url' => '/admin/formularios',
+            'icon' => 'fas fa-fw fa-file-alt',
+            'can' => 'is-admin',
         ],
         [
             'text' => 'General',
@@ -360,11 +373,6 @@ return [
             'text' => 'profile',
             'url' => 'profile',
             'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
         ],
         [
             'text' => 'multilevel',
@@ -458,6 +466,16 @@ return [
     */
 
     'plugins' => [
+        'CustomCSS' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '/css/custom.css',
+                ],
+            ],
+        ],
         'Datatables' => [
             'active' => false,
             'files' => [

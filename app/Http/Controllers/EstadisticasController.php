@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EstadisticasController extends Controller
 {
@@ -134,5 +135,56 @@ class EstadisticasController extends Controller
 
     return redirect()->route('estadisticas.index')
         ->with('success', 'Tus estadísticas se han guardado correctamente 💪');
+    }
+
+    public function generarPdf(Request $request)
+    {
+        $request->validate([
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+        ]);
+
+        $from = $request->from;
+        $to = $request->to;
+        $userId = Auth::id();
+
+        $dias = Estadisticas::where('id_user', $userId)
+            ->whereBetween('dia', [$from, $to])
+            ->select(DB::raw('DATE(dia) as fecha'))
+            ->distinct()
+            ->orderBy('fecha', 'asc')
+            ->pluck('fecha');
+
+        $data = [];
+        foreach ($dias as $fecha) {
+            $registros = Estadisticas::with(['grupoMuscular', 'ejercicio'])
+                ->where('id_user', $userId)
+                ->whereDate('dia', $fecha)
+                ->get();
+
+            $data[] = [
+                'dia' => $fecha,
+                'ejercicios' => $registros->map(function ($r) {
+                    return [
+                        'grupo' => $r->grupoMuscular->nombre_grupo ?? 'Sin grupo',
+                        'ejercicio' => $r->ejercicio->nombre_ejercicio ?? 'Sin ejercicio',
+                        'peso' => $r->peso,
+                        'series' => $r->series,
+                        'reps' => $r->reps,
+                    ];
+                }),
+            ];
+        }
+
+        $pdf = Pdf::loadView('estadisticas.pdf', [
+            'data' => $data,
+            'from' => $from,
+            'to' => $to,
+            'userName' => Auth::user()->name,
+            'userEmail' => Auth::user()->email,
+            'userSexo' => Auth::user()->sexo,
+        ]);
+
+        return $pdf->download('estadisticas_' . $from . '_' . $to . '.pdf');
     }
 }

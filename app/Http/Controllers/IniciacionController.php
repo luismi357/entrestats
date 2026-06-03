@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 use setasign\Fpdi\Fpdi;
 use App\Http\Controllers\Controller;
+use App\Models\FormSubmission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IniciacionController extends Controller
 {
     public function guardarRespuestas(Request $request)
     {
         $respuestas = $request->respuestas;
+
+        // Guardar en BD
+        FormSubmission::updateOrCreate(
+            ['user_id' => Auth::id()],
+            ['respuestas' => $respuestas]
+        );
 
         $pdf = new Fpdi();
 

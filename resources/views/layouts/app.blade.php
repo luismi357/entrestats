@@ -16,7 +16,8 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @viteReactRefresh 
         @vite(['resources/css/app.css', ])
-        @inertiaHead
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
 </head>
 <body>
     <div id="app">
@@ -32,7 +33,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        @auth
+                            @if(Auth::user()->email === 'luismiortegasancho@gmail.com')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.chat') }}">Admin Chat</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.formularios.index') }}">Admin Formularios</a>
+                                </li>
+                            @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

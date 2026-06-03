@@ -11,8 +11,17 @@ class ChatApiController extends Controller
 {
     public function index()
     {
+        $userId = request()->user()->id;
+
         return response()->json(
-            Message::with('user')->orderBy('created_at', 'desc')->take(50)->get()
+            Message::with('user')
+                ->where(function ($q) use ($userId) {
+                    $q->where('user_id', $userId)->whereNull('receiver_id')
+                      ->orWhere('receiver_id', $userId);
+                })
+                ->orderBy('created_at', 'desc')
+                ->take(50)
+                ->get()
         );
     }
 
@@ -22,11 +31,11 @@ class ChatApiController extends Controller
 
         $message = Message::create([
             'user_id' => $request->user()->id,
+            'receiver_id' => null,
             'content' => $request->content,
         ]);
 
         $message->load('user');
-        broadcast(new MessageSent($message))->toOthers();
 
         return response()->json($message, 201);
     }
