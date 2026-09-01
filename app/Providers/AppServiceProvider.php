@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if (config('app.env') === 'local' && str_contains(config('app.url'), 'ngrok-free.dev')) {
+        if (request()->header('X-Forwarded-Proto') === 'https' || request()->isSecure()) {
             URL::forceScheme('https');
         }
 
