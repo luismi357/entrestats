@@ -14,6 +14,7 @@
             @if($users->isEmpty())
                 <p class="text-muted">No hay mensajes de usuarios aún.</p>
             @else
+                <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
@@ -46,6 +47,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                </div>
             @endif
         </div>
     </div>

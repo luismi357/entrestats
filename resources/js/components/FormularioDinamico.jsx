@@ -72,16 +72,16 @@ export default function FormularioDinamico() {
 
     if (yaEnviado === null) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh', background: '#f4f7fb' }}>
-                <div className="spinner-border text-primary" role="status" />
+            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: 'calc(100vh - 150px)', background: 'transparent' }}>
+                <div className="spinner-border text-warning" role="status" />
             </div>
         );
     }
 
     if (yaEnviado) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh', background: '#f4f7fb' }}>
-                <div className="bg-white p-5 shadow rounded-4 text-center" style={{ width: '100%', maxWidth: '500px' }}>
+            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: 'calc(100vh - 150px)', background: 'transparent' }}>
+                <div className="p-5 shadow rounded-4 text-center" style={{ width: '100%', maxWidth: '500px', background: 'var(--bg-elevated)', border: '1px solid var(--border-strong)' }}>
                     <div style={{ fontSize: '60px', marginBottom: '16px' }}>✅</div>
                     <h2 className="fw-bold mb-3">Formulario ya enviado</h2>
                     <p className="text-muted mb-4">Ya has completado el cuestionario. Gracias.</p>
@@ -93,13 +93,15 @@ export default function FormularioDinamico() {
 
     return (
 
-        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh', background: '#f4f7fb' }}>
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: 'calc(100vh - 150px)', background: 'transparent' }}>
 
             <div
-                className="bg-white p-5 shadow rounded-4"
+                className="p-5 shadow rounded-4"
                 style={{
                     width: '100%',
-                    maxWidth: '700px'
+                    maxWidth: '700px',
+                    background: 'var(--bg-elevated)',
+                    border: '1px solid var(--border-strong)'
                 }}
             >
 

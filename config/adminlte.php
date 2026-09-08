@@ -171,12 +171,12 @@ return [
     |
     */
 
-    'classes_auth_card' => 'card-outline card-primary',
+    'classes_auth_card' => 'card-outline card-primary auth-card',
     'classes_auth_header' => '',
     'classes_auth_body' => '',
     'classes_auth_footer' => '',
-    'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-primary',
+    'classes_auth_icon' => 'fa-fw',
+    'classes_auth_btn' => 'btn-flat btn-primary btn-block',
 
     /*
     |--------------------------------------------------------------------------
@@ -311,124 +311,62 @@ return [
             'text' => 'search',
         ],
         [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ],
-        [
-            'text' => 'Home',
+            'text' => 'Inicio',
             'url' => '/home',
-            'icon' => 'far fa-fw fa-file',
-            
-            'label_color' => 'success',
+            'icon' => 'fas fa-fw fa-home',
         ],
         [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            
-            'label_color' => 'success',
-        ],
-        [
-            'text' => 'Formulario inicio',
+            'text' => 'Cuestionario inicial',
             'url' => 'formulario',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-fw fa-clipboard-list',
             'can' => 'submit-form',
         ],
         [
-            'text' => 'Admin Chat',
-            'url' => '/admin/chat',
-            'icon' => 'fas fa-fw fa-comments',
-            'can' => 'is-admin',
+            'text' => 'Entrenamiento',
+            'url' => 'estadisticas/create',
+            'icon' => 'fas fa-fw fa-dumbbell',
         ],
         [
-            'text' => 'Admin Formularios',
-            'url' => '/admin/formularios',
-            'icon' => 'fas fa-fw fa-file-alt',
-            'can' => 'is-admin',
-        ],
-        [
-            'text' => 'General',
-            'url' => '/estadisticasGeneral',
-            'icon' => 'far fa-fw fa-file',
-            
-            'label_color' => 'success',
-        ],
-        [
-            'text' => 'Estadisticas',
+            'text' => 'Estadísticas',
             'url' => '/estadisticas',
-            'icon' => 'far fa-fw fa-file',
-            
-            'label_color' => 'success',
+            'icon' => 'fas fa-fw fa-chart-line',
+        ],
+        [
+            'text' => 'Estadísticas general',
+            'url' => '/estadisticasGeneral',
+            'icon' => 'fas fa-fw fa-chart-pie',
         ],
         [
             'text' => 'IMC',
             'url' => '/imc',
-            'icon' => 'far fa-fw fa-file',
-            
-            'label_color' => 'success',
+            'icon' => 'fas fa-fw fa-weight-hanging',
         ],
-        ['header' => 'account_settings'],
         [
-            'text' => 'profile',
+            'text' => 'Chat',
+            'url' => '/chat',
+            'icon' => 'fas fa-fw fa-comments',
+        ],
+
+        ['header' => 'Administración'],
+        [
+            'text' => 'Chat de usuarios',
+            'url' => '/admin/chat',
+            'icon' => 'fas fa-fw fa-inbox',
+            'can' => 'is-admin',
+        ],
+        [
+            'text' => 'Formularios recibidos',
+            'url' => '/admin/formularios',
+            'icon' => 'fas fa-fw fa-clipboard-check',
+            'can' => 'is-admin',
+        ],
+
+        ['header' => 'Cuenta'],
+        [
+            'text' => 'Mi perfil',
             'url' => 'profile',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-fw fa-user-circle',
         ],
-        [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                ],
-            ],
-        ],
-        /*
-        ['header' => 'labels'],
-        [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
-        ],*/
     ],
 
     /*

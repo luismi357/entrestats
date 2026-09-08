@@ -15,7 +15,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -47,7 +47,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //USUARIOS
 
 
- Route::get('/register', [RegisterController::class, 'showRegistrationForm']);
+ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 
 
 
